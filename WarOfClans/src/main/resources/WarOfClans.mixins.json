@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "titaninus.warofclans.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AbstractBlockMixin",
+    "FarmLandProtection",
+    "ItemPickupMixin",
+    "MinecartEntityMixin",
+    "PlayerEntityMixin",
+    "StorageMinecartMixin",
+    "UsableItems",
+    "UseMixin",
+    "Villager"
+  ],
+  "client": [
+  ],
+  "server": [
+    "PlayerManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

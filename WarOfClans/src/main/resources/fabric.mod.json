@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "warofclans",
+  "version": "${version}",
+
+  "name": "warofclans",
+  "description": "War Of Clans",
+  "authors": [],
+  "contact": {},
+
+  "license": "MIT",
+  "icon": "assets/warofclans/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "titaninus.warofclans.client.WarOfClansClient"
+    ],
+    "main": [
+      "titaninus.warofclans.WarOfClans"
+    ],
+    "server": [
+      "titaninus.warofclans.server.WarOfClansServer"
+    ]
+  },
+
+  "mixins": [
+    "WarOfClans.mixins.json"
+  ],
+    
+  "depends": {
+    "fabricloader": ">=0.14.12",
+              "fabric": "*",
+    "fabric-key-binding-api-v1": "*",
+          "minecraft": "1.19.3"
+  }
+}
