@@ -26,6 +26,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "isBlockBreakingRestricted", cancellable = true, at = @At("HEAD"))
     public void isBlockBreakingRestricted(World world, BlockPos pos, GameMode mode, CallbackInfoReturnable<Boolean> info) {
+        //TODO if target is Capture totem use different method
         if (ClaimsCore.IsAccessToPosRestricted(world, pos, ((PlayerEntity) (Object) this))) {
             info.setReturnValue(true);
         }

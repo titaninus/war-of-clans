@@ -1,4 +1,4 @@
-package titaninus.warofclans.commands;
+package titaninus.warofclans.commands.lobby;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.sun.jna.IntegerType;
@@ -10,6 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import titaninus.warofclans.commands.WOCCommandManager;
 import titaninus.warofclans.core.TeamColor;
 import titaninus.warofclans.core.Utils;
 import titaninus.warofclans.core.WOCMap;

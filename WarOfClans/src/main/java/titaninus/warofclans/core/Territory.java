@@ -5,7 +5,6 @@ import net.minecraft.util.math.Vec3i;
 import titaninus.warofclans.gamelogic.GameMaster;
 import titaninus.warofclans.server.WarOfClansServer;
 
-import java.lang.annotation.Retention;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +31,7 @@ public class Territory {
     public int ActualPriceModifier = 1;
 
     public ArrayList<Mine> Mines = new ArrayList<>();
+    public List<InstalledCaptureTotem> CapturingTotems = new ArrayList<>();
 
     public int BasePrice() {
         return (IsBased? 1000000000 : (IsCaptured? WarOfClansServer.WOC_CONFIG.EnemyTerritoryPrice(): WarOfClansServer.WOC_CONFIG.NeutralTerritoryPrice()))
@@ -203,5 +203,20 @@ public class Territory {
     @Override
     public String toString() {
         return String.format("%sTerritory %s owned by %s, from (%s; %s) to (%s; %s)", IsBased? "Based ": "", Id, IsCaptured? OwnerTeamColor: "No One", startX, startZ, endX, endZ);
+    }
+
+    public void BecomeNeutral() {
+        if (!IsBased) {
+            IsCaptured = false;
+            OwnerTeam = null;
+            OwnerTeamColor = null;
+        }
+    }
+
+    public void DeleteCaptureTotems() {
+        for (var c: CapturingTotems) {
+            c.DeleteTotem();
+        }
+        CapturingTotems.clear();
     }
 }

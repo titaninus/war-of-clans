@@ -291,12 +291,66 @@ public class GameMaster implements Updatable {
         }
         _updatables.remove(battle);
         _currentBattle = null;
+        DeleteAllInstalledTotems();
     }
 
     @Override
     public void Update() {
         for (var u: _updatables) {
             u.Update();
+        }
+    }
+
+    public void CheckForTerritoryCapture(Territory captureTerritory) {
+        if (captureTerritory.CapturingTotems.size() != 5) {
+            return;
+        }
+        var isAllActivated = true;
+        for (var t: captureTerritory.CapturingTotems) {
+            if (!t.IsActivated) {
+                isAllActivated = false;
+            }
+        }
+        if (!isAllActivated) {
+            return;
+        }
+        // 0 = Red, 1 = Yellow, 2 = Blue, 3 = Green
+        var totems = new int[4];
+        for (var t: captureTerritory.CapturingTotems) {
+            if (t.OwnedTeam == TeamColor.Red) {
+                totems[0] += 1;
+            }
+            if (t.OwnedTeam == TeamColor.Yellow) {
+                totems[1] += 1;
+            }
+            if (t.OwnedTeam == TeamColor.Blue) {
+                totems[2] += 1;
+            }
+            if (t.OwnedTeam == TeamColor.Green) {
+                totems[3] += 1;
+            }
+        }
+        if (totems[0] >= 3) {
+            CaptureTerritory(WOCTeam.RedTeam, captureTerritory);
+            return;
+        }
+        if (totems[1] >= 3) {
+            CaptureTerritory(WOCTeam.YellowTeam, captureTerritory);
+            return;
+        }
+        if (totems[2] >= 3) {
+            CaptureTerritory(WOCTeam.BlueTeam, captureTerritory);
+            return;
+        }
+        if (totems[3] >= 3) {
+            CaptureTerritory(WOCTeam.GreenTeam, captureTerritory);
+            return;
+        }
+    }
+
+    private void DeleteAllInstalledTotems() {
+        for (var t: WOCMap.Instance().Territories) {
+            t.DeleteCaptureTotems();
         }
     }
 }

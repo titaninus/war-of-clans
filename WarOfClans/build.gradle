@@ -19,7 +19,6 @@ repositories {
 
 dependencies {
 
-    include "org.javatuples.javatuples:1.2"
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -33,6 +32,8 @@ dependencies {
     // only if you plan to use owo-config
     //annotationProcessor "io.wispforest:owo-lib:${project.owo_version}"
     annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
+    // https://mavenlibs.com/maven/dependency/org.javatuples/javatuples
+    implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
 }
 
 processResources {

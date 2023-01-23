@@ -3,8 +3,10 @@ package titaninus.warofclans.permissions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import titaninus.warofclans.core.Territory;
 import titaninus.warofclans.core.WOCMap;
 import titaninus.warofclans.core.WOCTeam;
+import titaninus.warofclans.gamelogic.GameMaster;
 
 public class ClaimsCore {
     public static boolean IsAccessToPosRestricted(World world, BlockPos blockPos, PlayerEntity player) {
@@ -25,10 +27,24 @@ public class ClaimsCore {
         if (world.isClient) {
             var color = territory.OwnerTeamColor;
             var team = WOCTeam.GetTeamByColor(color);
-            return !team.ContainsPlayer(player);
+            return RestrictedToPlayerOnTerritoryOwnedBy(player, territory, team);
         } else {
-            return !territory.OwnerTeam.ContainsPlayer(player);
+            var team = territory.OwnerTeam;
+            return RestrictedToPlayerOnTerritoryOwnedBy(player, territory, team);
         }
+    }
+
+    private static boolean RestrictedToPlayerOnTerritoryOwnedBy(PlayerEntity player, Territory territory, WOCTeam team) {
+        if (team.InAnnihilationMode) {
+            return false;
+        }
+        if (GameMaster.Instance().IsInBattle()) {
+            if (territory.IsBased && !team.ContainsPlayer(player)) {
+                return true;
+            }
+            return false;
+        }
+        return !team.ContainsPlayer(player);
     }
 
     public static boolean HaveAccessToBlockPos(World world, BlockPos blockPos, PlayerEntity player) {
@@ -60,5 +76,37 @@ public class ClaimsCore {
             return false;
         }
         return territory.OwnerTeam.ContainsPlayer(playerName);
+    }
+
+    public static boolean CanUseTotem(World world, BlockPos blockPos, PlayerEntity player) {
+        //TODO check if in block pos is totem pedestal
+        if (!GameMaster.Instance().IsInBattle()) {
+            return false;
+        }
+        var territory = WOCMap.Instance().GetTerritoryByPos(blockPos);
+        if (territory == null) {
+            return false;
+        }
+        var team = WOCTeam.FindPlayerTeam(player);
+        if (team == null) {
+            return false;
+        }
+        if (territory.IsBased) {
+            return false;
+        }
+        if (!territory.IsCaptured) {
+            return true;
+        }
+        // You cannot set totem on your territory
+        if (territory.OwnerTeamColor == team.Color) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean CanDestroyTotem(World world, BlockPos blockPos, PlayerEntity player) {
+        //TODO check if in block pos is capture totem
+        //TODO check totem is not activated
+        return true;
     }
 }

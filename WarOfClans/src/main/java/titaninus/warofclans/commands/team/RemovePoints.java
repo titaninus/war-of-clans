@@ -20,21 +20,21 @@ public class RemovePoints implements WOCCommandManager.RegistrableCommand {
                 .register(literal("removePointsFrom")
                         .requires(source -> source.hasPermissionLevel(4))
                             .then(literal("Red")
-                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000))).executes(
+                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000)).executes(
                                         ctx -> execute(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "amount"), TeamColor.Red)
-                                ))
+                                )))
                         .then(literal("Green")
-                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000))).executes(
+                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000)).executes(
                                         ctx -> execute(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "amount"), TeamColor.Green)
-                                ))
+                                )))
                         .then(literal("Blue")
-                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000))).executes(
+                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000)).executes(
                                         ctx -> execute(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "amount"), TeamColor.Blue)
-                                ))
+                                )))
                         .then(literal("Yellow")
-                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000))).executes(
+                                .then(argument("amount", IntegerArgumentType.integer(0, 10000000)).executes(
                                         ctx -> execute(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "amount"), TeamColor.Yellow)
-                                ))
+                                )))
                 );
     }
 

@@ -6,6 +6,8 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import titaninus.warofclans.commands.general.*;
+import titaninus.warofclans.commands.lobby.SetLobbySpawnPoint;
+import titaninus.warofclans.commands.lobby.SpawnInLobby;
 import titaninus.warofclans.commands.team.*;
 import titaninus.warofclans.commands.territory.*;
 import titaninus.warofclans.commands.totems.*;
@@ -39,8 +41,13 @@ public class WOCCommandManager {
         Commands.add(new SpawnInTerritory());
         Commands.add(new WhatIsTerritory());
         Commands.add(new SetTerritoryOwner());
+        Commands.add(new SetTimeForTerritoryChange());
+        Commands.add(new SetCostMultiplier());
+        Commands.add(new BuyTerritory());
         // Totems
         Commands.add(new SetTotemInTerritory());
+        Commands.add(new SetTimeForTotemActivationInEnemy());
+        Commands.add(new SetTimeForTotemActivationInNeutral());
         // Lobby
         Commands.add(new SetLobbySpawnPoint());
         Commands.add(new SpawnInLobby());

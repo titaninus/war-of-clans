@@ -28,7 +28,7 @@ public class WOCTeam {
 
     public static ArrayList<WOCTeam> Teams;
 
-    private static Scoreboard _scoreboard;;
+    private static Scoreboard _scoreboard;
     private static class SerializationWrapper {
         public List<WOCTeam> Teams;
 
