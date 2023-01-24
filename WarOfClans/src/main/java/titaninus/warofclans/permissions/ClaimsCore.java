@@ -78,8 +78,11 @@ public class ClaimsCore {
         return territory.OwnerTeam.ContainsPlayer(playerName);
     }
 
-    public static boolean CanUseTotem(World world, BlockPos blockPos, PlayerEntity player) {
+    public static boolean CanPlaceTotem(World world, BlockPos blockPos, PlayerEntity player) {
         //TODO check if in block pos is totem pedestal
+        if (player.hasPermissionLevel(4)) {
+            return true;
+        }
         if (!GameMaster.Instance().IsInBattle()) {
             return false;
         }
@@ -108,5 +111,29 @@ public class ClaimsCore {
         //TODO check if in block pos is capture totem
         //TODO check totem is not activated
         return true;
+    }
+
+    public static boolean CanUseMineChest(World world, BlockPos pos, PlayerEntity player) {
+        // Can use in neutral
+        // Can use if you are member owning time
+        if (player.hasPermissionLevel(4)) {
+            return true;
+        }
+        var territory = WOCMap.Instance().GetTerritoryByPos(pos);
+        if (territory == null) {
+            return false;
+        }
+        if (!territory.IsCaptured) {
+            return true;
+        }
+        var playerTeam = WOCTeam.FindPlayerTeam(player);
+        if (playerTeam == null) {
+            return false;
+        }
+        if (territory.OwnerTeamColor == playerTeam.Color) {
+            return true;
+        }
+
+        return false;
     }
 }

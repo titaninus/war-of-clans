@@ -135,10 +135,15 @@ public class GameMaster implements Updatable {
             var pos = WOCMap.Instance().GetBaseTerritoryOfTeam(team).SpawnPosition;
             SetSpawnPointForPlayersInTeam(team, new BlockPos(pos));
         }
+
+        ReloadStage1();
     }
 
     public void ReloadStage1() {
 
+        for (var t: WOCMap.Instance().Territories) {
+            t.EnableMines();
+        }
     }
 
 
@@ -146,20 +151,28 @@ public class GameMaster implements Updatable {
         GameConfig.runningStage(2);
         GameConfig.save();
         PrepareAndSave();
+        ReloadStage2();
     }
 
     public void ReloadStage2() {
 
+        for (var t: WOCMap.Instance().Territories) {
+            t.EnableMines();
+        }
     }
 
     public void StartStage3() {
         GameConfig.runningStage(3);
         GameConfig.save();
         PrepareAndSave();
+        ReloadStage3();
     }
 
     public void ReloadStage3() {
 
+        for (var t: WOCMap.Instance().Territories) {
+            t.EnableMines();
+        }
     }
 
     public void EndGame() {
@@ -171,10 +184,15 @@ public class GameMaster implements Updatable {
             SetSpawnPointForPlayersInTeam(team, pos);
         }
         PrepareAndSave();
+
+        ReloadEndGame();
     }
 
     public void ReloadEndGame() {
 
+        for (var t: WOCMap.Instance().Territories) {
+            t.DisableMines();
+        }
     }
 
     public void SetSpawnPointForPlayersInTeam(WOCTeam team, BlockPos pos) {
@@ -352,5 +370,12 @@ public class GameMaster implements Updatable {
         for (var t: WOCMap.Instance().Territories) {
             t.DeleteCaptureTotems();
         }
+    }
+
+    public void AddUpdatable(Updatable target) {
+        _updatables.add(target);
+    }
+    public void RemoveUpdatable(Updatable target) {
+        _updatables.remove(target);
     }
 }

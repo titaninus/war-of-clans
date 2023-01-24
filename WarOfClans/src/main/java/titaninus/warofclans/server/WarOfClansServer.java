@@ -3,10 +3,14 @@ package titaninus.warofclans.server;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
+import titaninus.warofclans.commands.FormattableTimeArgumentType;
 import titaninus.warofclans.commands.WOCCommandManager;
 import titaninus.warofclans.core.ServerMessageSender;
 import titaninus.warofclans.core.Utils;
@@ -17,6 +21,8 @@ import titaninus.warofclans.gamelogic.GameMaster;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static titaninus.warofclans.WarOfClans.MOD_ID;
 
 @Environment(EnvType.SERVER)
 public class WarOfClansServer implements DedicatedServerModInitializer {
@@ -34,6 +40,8 @@ public class WarOfClansServer implements DedicatedServerModInitializer {
     public static WOCCommandManager CommandManager;
     @Override
     public void onInitializeServer() {
+        ArgumentTypeRegistry.registerArgumentType(new Identifier(MOD_ID, "formattabletime"), FormattableTimeArgumentType.class, ConstantArgumentSerializer.of(FormattableTimeArgumentType::create));
+
         ServerLifecycleEvents.SERVER_STARTED.register(
                 server -> {
                     MinecraftServer = server;

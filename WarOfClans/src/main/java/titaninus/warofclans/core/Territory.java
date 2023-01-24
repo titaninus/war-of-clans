@@ -127,8 +127,12 @@ public class Territory {
             SpawnPosition = new BlockPos(GetMiddlePoint().getX(), Utils.FindFirstGroundYPos(GetMiddlePoint()), GetMiddlePoint().getZ());
             Mines = new ArrayList<>();
             if (!MinePool.contains(-1)) {
+                var offset = 1;
                 for (var m: MinePool) {
-                    var mine = Mine.Create(m);
+                    var pos = SpawnPosition.add(offset, 0, 0);
+                    pos = new Vec3i(pos.getX(), Utils.FindFirstGroundYPos(new BlockPos(pos)) , pos.getZ());
+                    var mine = Mine.Create(m, pos, this);
+                    offset += 3;
                     Mines.add(mine);
                 }
             }
@@ -144,7 +148,7 @@ public class Territory {
 
     private void ReloadMines() {
         for (var m: Mines) {
-            m.Init();
+            m.Init(this);
         }
     }
 
@@ -191,6 +195,17 @@ public class Territory {
         SpawnPositionRaw = new ArrayList<>(List.of(SpawnPosition.getX(), SpawnPosition.getY(), SpawnPosition.getZ()));
     }
 
+    public void EnableMines () {
+        for (var m : Mines) {
+            m.Run();
+        }
+    }
+
+    public void DisableMines() {
+        for (var m : Mines) {
+            m.Stop();
+        }
+    }
 
     public BlockPos GetMiddlePoint() {
         return new BlockPos((startX + endX) / 2, 70, (startZ + endZ) / 2);

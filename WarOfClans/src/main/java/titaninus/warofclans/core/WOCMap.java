@@ -124,40 +124,40 @@ public class WOCMap {
         endX = startX + config.MapWidth() * config.territorySize();
         startZ = config.startZOffset();
         endZ = startZ + config.MapHeight() * config.territorySize();
-        var mapsPool = WarOfClansServer.WOC_CONFIG.MinesMap();
-        if (mapsPool.size() < config.MapHeight()) {
-            mapsPool = new ArrayList<>(List.of(
+        var minesPool = WarOfClansServer.WOC_CONFIG.MinesMap();
+        if (minesPool.size() < config.MapHeight()) {
+            minesPool = new ArrayList<>(List.of(
                     List.of(List.of(-1), List.of(1, 2), List.of(1, 3), List.of(1, 2), List.of(-1)),
                     List.of(List.of(1, 2), List.of(4, 3), List.of(4, 5), List.of(4, 3), List.of(1, 2)),
                     List.of(List.of(1, 3), List.of(5, 2), List.of(6), List.of(5, 2), List.of(1, 3)),
                     List.of(List.of(1, 2), List.of(4, 3), List.of(4, 5), List.of(4, 3), List.of(1, 2)),
                     List.of(List.of(-1), List.of(1, 2), List.of(1, 3), List.of(1, 2), List.of(-1))
             ));
-            WarOfClansServer.WOC_CONFIG.MinesMap(mapsPool);
+            WarOfClansServer.WOC_CONFIG.MinesMap(minesPool);
             WarOfClansServer.WOC_CONFIG.save();
         }
         for (int i = 0; i < config.MapWidth(); ++i) {
             for (int j = 0; j < config.MapHeight(); ++j) {
-                var mapPool = mapsPool.get(j).get(i);
+                var minePool = minesPool.get(j).get(i);
                 var territory = new Territory();
                 Territories.add(territory);
                 var x = startX + i * config.territorySize();
                 var z = startZ + j * config.territorySize();
                 if (i == 0 && j == 0) {
                     // Red team
-                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.RedTeam, mapPool);
+                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.RedTeam, minePool);
                 } else if (i == 0 && j == config.MapHeight() - 1) {
                     // Yellow
-                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.YellowTeam, mapPool);
+                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.YellowTeam, minePool);
                 } else if (i == config.MapWidth() - 1 && j == 0) {
                     // Blue
-                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.BlueTeam, mapPool);
+                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.BlueTeam, minePool);
                 } else if (i == config.MapWidth() - 1 && j == config.MapHeight() - 1) {
                     // Green
-                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.GreenTeam, mapPool);
+                    territory.Initialize(i * config.MapHeight() + j, x, z, true, WOCTeam.GreenTeam, minePool);
                 } else {
                     // Neutral
-                    territory.Initialize(i * config.MapHeight() + j, x, z, false, null, mapPool);
+                    territory.Initialize(i * config.MapHeight() + j, x, z, false, null, minePool);
                 }
                 territory.BeforeSerialize();
             }
