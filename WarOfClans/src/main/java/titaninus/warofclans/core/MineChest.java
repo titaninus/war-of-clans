@@ -33,14 +33,13 @@ public class MineChest {
         InstantiateBlock();
     }
     public boolean SpawnResource(World world) {
-        var state = world.getBlockState(BoundedChestPos);
-        var block = (ChestBlock) state.getBlock();
-        if (block == null) {
+        var entity = world.getBlockEntity(BoundedChestPos);
+        if (!(entity instanceof ChestBlockEntity) ) {
             InstantiateBlock();
-            state = world.getBlockState(BoundedChestPos);
+            entity = world.getBlockEntity(BoundedChestPos);
         }
 
-        var inventory = new ChestBlockEntity(BoundedChestPos, state);
+        var inventory = (ChestBlockEntity) entity;
         for (int i = 0; i < inventory.size(); i++) {
             var stack = inventory.getStack(i);
             if (!stack.isEmpty()) {

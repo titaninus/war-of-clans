@@ -1,7 +1,10 @@
 package titaninus.warofclans.core;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import titaninus.warofclans.core.interfaces.Updatable;
@@ -13,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Mine implements Updatable {
     public transient Territory Owner;
@@ -126,6 +130,12 @@ public class Mine implements Updatable {
                 Update();
             }
         });
+        ServerTickEvents.START_SERVER_TICK.register(new ServerTickEvents.StartTick() {
+            @Override
+            public void onStartTick(MinecraftServer server) {
+                InternalUpdate();
+            }
+        });
         RestorePosition();
         InstantiateMineChest();
         timer.setRepeats(true); // Only execute once
@@ -142,13 +152,23 @@ public class Mine implements Updatable {
 
     public void Update() {
         if (isActive) {
-            InternalUpdate();
+            PutChestUpdateInQueue();
+            //InternalUpdate();
         }
     }
 
+    public transient AtomicBoolean ShouldSpawn = new AtomicBoolean();
+    private void PutChestUpdateInQueue() {
+        ShouldSpawn.set(true);
+    }
+
+    // Make it run in a server tick thread
     private void InternalUpdate() {
-        if (Chest != null) {
-            Chest.SpawnResource(WarOfClansServer.MinecraftServer.getOverworld());
+        if  (ShouldSpawn.get()) {
+            if (Chest != null) {
+                Chest.SpawnResource(WarOfClansServer.MinecraftServer.getOverworld());
+            }
+            ShouldSpawn.set(false);
         }
     }
 }

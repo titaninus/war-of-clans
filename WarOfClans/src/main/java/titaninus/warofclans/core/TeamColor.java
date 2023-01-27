@@ -1,5 +1,6 @@
 package titaninus.warofclans.core;
 
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 
 public enum TeamColor {
@@ -42,5 +43,23 @@ public enum TeamColor {
             }
         }
         return "§0";
+    }
+
+    public DyeColor toDyeColor() {
+        switch (this) {
+            case Red -> {
+                return DyeColor.RED;
+            }
+            case Blue -> {
+                return DyeColor.BLUE;
+            }
+            case Yellow -> {
+                return DyeColor.YELLOW;
+            }
+            case Green -> {
+                return DyeColor.GREEN;
+            }
+        }
+        return null;
     }
 }
